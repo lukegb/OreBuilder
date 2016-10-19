@@ -1,0 +1,5 @@
+[repositories]
+local
+ivy-proxy-releases: https://nexus-ci.apps.spongepowered.org/content/groups/ivy/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
+maven-proxy-releases: https://nexus-ci.apps.spongepowered.org/content/groups/maven/
+

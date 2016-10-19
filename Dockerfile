@@ -21,12 +21,16 @@ RUN mkdir /opt/app-root && \
       -c "Default Application User" default && \
     chown -R 1001:0 /opt/app-root
 ENV HOME=/opt/app-root/src \
-    PATH=/opt/app-root/src/bin:/opt/app-root/bin:$PATH
+    PATH=/opt/app-root/src/bin:/opt/app-root/bin:$PATH \
+    SBT_OPTS="-Dsbt.override.build.repos=true"
 WORKDIR /opt/app-root
 USER 1001
 
+# Copy sbt configuration
+COPY ./repositories /tmp/sbt-repositories
+
 # Run sbt to precache it
-RUN sbt -sbt-version 0.13.11 about
+RUN mkdir /opt/app-root/.sbt && cat /tmp/sbt-repositories > /opt/app-root/.sbt/repositories && sbt -sbt-version 0.13.11 about
 
 # Specify the ports for the final image
 EXPOSE 8080
