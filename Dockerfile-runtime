@@ -16,9 +16,10 @@ EXPOSE 8080
 
 # Create app user
 RUN mkdir /opt/app-root && \
-    useradd -u 1001 -r -g 0 -d ${HOME} -s /sbin/nologin \
+    useradd -u 1001 -r -g 0 -d /opt/app-root -s /sbin/nologin \
       -c "Default Application User" default && \
     chown -R 1001:0 /opt/app-root
 ENV HOME=/opt/app-root/src \
     PATH=/opt/app-root/src/bin:/opt/app-root/bin:$PATH
+WORKDIR /opt/app-root
 USER 1001
