@@ -1,3 +1,10 @@
 #!/bin/bash
 
+# We expect various environment variables to be set, so we'll set them again here
+export BUILD_NUMBER="$(echo "${OPENSHIFT_BUILD_NAME}" | grep -i '[0-9][0-9]*$')"
+export GIT_BRANCH=openshift
+export GIT_COMMIT="$OPENSHIFT_BUILD_COMMIT"
+export JOB_NAME="${OPENSHIFT_BUILD_NAMESPACE}/$(echo "${OPENSHIFT_BUILD_NAME}" | sed 's/-[0-9][0-9]*$//')"
+export BUILD_TAG="${OPENSHIFT_BUILD_NAMESPACE}/${OPENSHIFT_BUILD_NAME}"
+
 exec /opt/app/bin/start -Dpidfile.path=/dev/null "$@"
