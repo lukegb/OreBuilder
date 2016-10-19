@@ -10,16 +10,10 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B
     echo "deb http://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list && \
     apt-get update && apt-get install -y sbt && rm -rf /var/lib/apt/lists/*
 
-# Run sbt to precache it
-RUN sbt -sbt-version 0.13.11 about
-
 # Defines the S2I scripts location
 LABEL io.openshift.s2i.scripts-url=image:///usr/local/s2i
 # Copy the S2I scripts in
 COPY ./.s2i/bin/ /usr/local/s2i
-
-# Specify the ports for the final image
-EXPOSE 8080
 
 # Create app user
 RUN mkdir /opt/app-root && \
@@ -30,3 +24,9 @@ ENV HOME=/opt/app-root/src \
     PATH=/opt/app-root/src/bin:/opt/app-root/bin:$PATH
 WORKDIR /opt/app-root
 USER 1001
+
+# Run sbt to precache it
+RUN sbt -sbt-version 0.13.11 about
+
+# Specify the ports for the final image
+EXPOSE 8080
