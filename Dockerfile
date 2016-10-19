@@ -16,10 +16,10 @@ LABEL io.openshift.s2i.scripts-url=image:///usr/local/s2i
 COPY ./.s2i/bin/ /usr/local/s2i
 
 # Create app user
-RUN mkdir /opt/app-root && \
+RUN mkdir /opt/app-root && mkdir /opt/app && \
     useradd -u 1001 -r -g 0 -d /opt/app-root -s /sbin/nologin \
       -c "Default Application User" default && \
-    chown -R 1001:0 /opt/app-root
+    chown -R 1001:0 /opt/app-root && chown -R 1001:0 /opt/app
 ENV HOME=/opt/app-root/src \
     PATH=/opt/app-root/src/bin:/opt/app-root/bin:$PATH \
     SBT_OPTS="-Dsbt.override.build.repos=true"
