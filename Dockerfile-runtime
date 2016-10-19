@@ -2,7 +2,7 @@ FROM openjdk:8u102-jre
 
 MAINTAINER Luke Granger-Brown <docker@lukegb.com>
 
-LABEL io.openshift.expose-services="8080:http" \
+LABEL io.openshift.expose-services="9000:http" \
       io.openshift.tags="sbt"
 
 # Defines the S2I scripts location
@@ -12,7 +12,7 @@ LABEL io.openshift.s2i.scripts-url=image:///usr/local/s2i \
 COPY ./.s2i/bin/ /usr/local/s2i
 
 # Specify the ports for the final image
-EXPOSE 8080
+EXPOSE 9000
 
 # Create app user
 RUN mkdir /opt/app-root && mkdir /opt/app && \

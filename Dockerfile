@@ -2,8 +2,7 @@ FROM openjdk:8u102-jdk
 
 MAINTAINER Luke Granger-Brown <docker@lukegb.com>
 
-LABEL io.openshift.expose-services="8080:http" \
-      io.openshift.tags="builder,sbt"
+LABEL io.openshift.tags="builder,sbt"
 
 # Install sbt
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823 && \
@@ -31,6 +30,3 @@ COPY ./repositories /tmp/sbt-repositories
 
 # Run sbt to precache it
 RUN mkdir /opt/app-root/.sbt && cat /tmp/sbt-repositories > /opt/app-root/.sbt/repositories && sbt -sbt-version 0.13.11 about
-
-# Specify the ports for the final image
-EXPOSE 8080
