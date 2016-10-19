@@ -13,7 +13,3 @@ COPY ./.s2i/bin/ /usr/local/s2i
 
 # Specify the ports for the final image
 EXPOSE 8080
-
-# Create app user and switch to it
-RUN groupadd -g 3004 -r ore && useradd -g ore -m -r -u 3004 app
-USER app
