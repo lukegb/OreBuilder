@@ -1,0 +1,8 @@
+#!/bin/bash
+
+pushd ${HOME}
+if [ -d .ivy2/cache ]; then
+  # archive the ivy2 cache
+  tar cf - .ivy2/cache
+fi
+popd

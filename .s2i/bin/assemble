@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# restore build artifacts (i.e. ivy cache)
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    mv /tmp/artifacts/* $HOME/.
+fi
+
+pushd /tmp/src
+sbt 'set topLevelDirectory := Some("app")' universal:packageZipTarball || exit 2
+
+tar -C /opt -xvf target/universal/*.tgz || exit 3
+mv /opt/app/conf/application.conf.template /opt/app/conf/application.conf || exit 4
+MAIN_BIN=$(ls /opt/app/bin/* | head -1)
+ln -s $MAIN_BIN /opt/app/bin/start || exit 5
+popd
