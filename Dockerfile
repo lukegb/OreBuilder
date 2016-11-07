@@ -3,6 +3,8 @@ FROM openjdk:8u102-jdk
 MAINTAINER Luke Granger-Brown <docker@lukegb.com>
 
 LABEL io.openshift.tags="builder,sbt"
+ENV SBT_VERSION=0.13 \
+    SBT_FULL_VERSION=0.13.11
 
 # Install sbt
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823 && \
@@ -25,8 +27,16 @@ ENV HOME=/opt/app-root/src \
 WORKDIR /opt/app-root
 USER 1001
 
-# Copy sbt configuration
-COPY ./repositories /tmp/sbt-repositories
+# Set up authenticated repository
+ARG AUTH_REALM
+ARG AUTH_HOST
+ARG AUTH_USER
+ARG AUTH_PASSWORD
+RUN mkdir /opt/app-root/.sbt && \
+    echo -ne '[repositories]\nlocal\nivy-proxy-releases: https://${AUTH_HOST}/repository/proxy-ivy/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]\nmaven-proxy-releases: https://${AUTH_HOST}/repository/proxy-maven/\n' > /opt/app-root/.sbt/repositories && \
+    mkdir -p /opt/app-root/.sbt/${SBT_VERSION}/plugins && \
+    echo 'credentials += Credentials("/opt/app-root/.sbt/.credentials")' > /opt/app-root/.sbt/0.13/plugins/credentials.sbt && \
+    echo -ne 'realm=${AUTH_REALM}\nhost=${AUTH_HOST}\nuser=${AUTH_USER}\npassword=${AUTH_PASSWORD}\n' > /opt/app-root/.sbt/.credentials
 
 # Run sbt to precache it
-RUN mkdir /opt/app-root/.sbt && cat /tmp/sbt-repositories > /opt/app-root/.sbt/repositories && sbt -sbt-version 0.13.11 about
+RUN sbt -sbt-version ${SBT_FULL_VERSION} about
