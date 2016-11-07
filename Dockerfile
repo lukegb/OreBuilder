@@ -28,10 +28,6 @@ WORKDIR /opt/app-root
 USER 1001
 
 # Set up authenticated repository
-ARG AUTH_REALM
-ARG AUTH_HOST
-ARG AUTH_USER
-ARG AUTH_PASSWORD
 RUN mkdir /opt/app-root/.sbt && \
     echo -ne '[repositories]\nlocal\nivy-proxy-releases: https://${AUTH_HOST}/repository/proxy-ivy/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]\nmaven-proxy-releases: https://${AUTH_HOST}/repository/proxy-maven/\n' > /opt/app-root/.sbt/repositories && \
     mkdir -p /opt/app-root/.sbt/${SBT_VERSION}/plugins && \
