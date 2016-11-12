@@ -33,7 +33,7 @@ RUN mkdir /opt/app-root/.sbt && \
     printf '[repositories]\nlocal\nivy-proxy-releases: https://%s/repository/proxy-ivy/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]\nmaven-proxy-releases: https://%s/repository/proxy-maven/\n' ${AUTH_HOST} ${AUTH_HOST} > /opt/app-root/.sbt/repositories && \
     mkdir -p /opt/app-root/.sbt/${SBT_VERSION}/plugins && \
     printf 'credentials += Credentials(new File("%s"))\n' "${SBT_CREDENTIALS}" > /opt/app-root/.sbt/0.13/plugins/credentials.sbt && \
-    printf 'realm=%s\nhost=%s\nuser=%s\npassword=%s\n' "${AUTH_REALM}" "${AUTH_HOST}" "${AUTH_USER}" "${AUTH_PASSWORD}" > /opt/app-root/.sbt/.credentials
+    printf 'realm=%s\nhost=%s\nuser=%s\npassword=%s\n' "${AUTH_REALM}" "${AUTH_HOST}" "${AUTH_USER}" "${AUTH_PASSWORD}" > "${SBT_CREDENTIALS}"
 
 # Run sbt to precache it
 RUN sbt -sbt-version ${SBT_FULL_VERSION} about
