@@ -29,10 +29,10 @@ USER 1001
 
 # Set up authenticated repository
 RUN mkdir /opt/app-root/.sbt && \
-    printf '[repositories]\nlocal\nivy-proxy-releases: https://${AUTH_HOST}/repository/proxy-ivy/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]\nmaven-proxy-releases: https://${AUTH_HOST}/repository/proxy-maven/\n' > /opt/app-root/.sbt/repositories && \
+    printf "[repositories]\nlocal\nivy-proxy-releases: https://${AUTH_HOST}/repository/proxy-ivy/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]\nmaven-proxy-releases: https://${AUTH_HOST}/repository/proxy-maven/\n" > /opt/app-root/.sbt/repositories && \
     mkdir -p /opt/app-root/.sbt/${SBT_VERSION}/plugins && \
     printf 'credentials += Credentials("/opt/app-root/.sbt/.credentials")\n' > /opt/app-root/.sbt/0.13/plugins/credentials.sbt && \
-    printf 'realm=${AUTH_REALM}\nhost=${AUTH_HOST}\nuser=${AUTH_USER}\npassword=${AUTH_PASSWORD}\n' > /opt/app-root/.sbt/.credentials
+    printf "realm=${AUTH_REALM}\nhost=${AUTH_HOST}\nuser=${AUTH_USER}\npassword=${AUTH_PASSWORD}\n" > /opt/app-root/.sbt/.credentials
 
 # Run sbt to precache it
 RUN sbt -sbt-version ${SBT_FULL_VERSION} about
